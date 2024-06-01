@@ -4,12 +4,11 @@ import os
 from .board import Board
 
 class Chess:
-  def __init__(self) -> None:
+  def __init__(self):
     self.board = Board()
     self.turn = "red"
     self.you = "red"
     self.opponent = "blue"
-    self.winner = None
     self.game_over = False
 
   
@@ -49,10 +48,10 @@ class Chess:
     player, host, port = input('Select the player (player1/player2), host, and port:\n').split()
 
     if player == 'player1':
-      self.game.host_game(host, int(port))
+      self.host_game(host, int(port))
       print(f"Hosting the game on {host}:{port}")
     elif player == 'player2':
-      self.game.connect_to_game(host, int(port))
+      self.connect_to_game(host, int(port))
       print(f"Connecting to the game at {host}:{port}")
     else:
       raise ValueError("Invalid user. Use 'player1' or 'player2'.")
@@ -68,18 +67,21 @@ class Chess:
       if self.turn == self.you:
         while True:
           move = input("Enter a move (e.g., A2 A3): ").upper()
-          if self.board.validate_move(*move.split()):
+          coordinates = move.split()
+          if not self.board.is_within_bounds(coordinates[0]) or not self.board.is_within_bounds(coordinates[1]):
+            print('Invalid coordinates! Try again.')
+          elif self.board.get_piece(coordinates[0]) != " " and self.board.get_piece(coordinates[0]).color != self.you:
+            print('Invalid piece! Try again.')
+          elif self.board.validate_move(*coordinates):
             client.send(move.encode('utf-8'))
-            self.board.move_piece(*move.split())
+            self.board.move_piece(*coordinates)
             self.turn = self.opponent
             break
           else:
-            print('Invalid move!')
+            print('Invalid move! Try again.')
       else:
         data = client.recv(1024)
-        if not data:
-          break
-        else:
+        if data:
           self.board.move_piece(*data.decode('utf-8').split())
           self.turn = self.you
 

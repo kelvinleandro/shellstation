@@ -1,3 +1,4 @@
+from typing import Union
 from pieces import *
 
 
@@ -7,7 +8,7 @@ class Board:
         self.setup_board()
     
 
-    def setup_board(self):
+    def setup_board(self) -> None:
         # Setup blue pieces (assuming blue is for one player and red is for the other)
         for i in range(8):
             self.board[1][i] = Pawn('blue')
@@ -33,7 +34,7 @@ class Board:
         self.board[7][7] = Rook('red')
     
     
-    def display(self):
+    def display(self) -> None:
         print('  A B C D E F G H')
         for i in range(8):
             row = str(8 - i) + ' '
@@ -44,7 +45,7 @@ class Board:
         print('  A B C D E F G H')
     
 
-    def display_inverted(self):
+    def display_inverted(self) -> None:
         print('  H G F E D C B A')
         for i in range(8):
             row = str(i + 1) + ' '
@@ -55,7 +56,27 @@ class Board:
         print('  H G F E D C B A')
 
 
-    def validate_move(self, start, end):
+    def is_within_bounds(self, position: str) -> bool:
+        if len(position) != 2:
+            return False
+        col = position[0].upper()
+        row = position[1]
+        
+        if col < 'A' or col > 'H':
+            return False
+        if not row.isdigit() or int(row) < 1 or int(row) > 8:
+            return False
+        
+        return True
+
+
+    def get_piece(self, position: str) -> Union['ChessPiece', str]:
+        col = ord(position[0].upper()) - ord('A')
+        row = 8 - int(position[1])
+        return self.board[row][col]
+
+
+    def validate_move(self, start: str, end: str) -> bool:
         start_col = ord(start[0].upper()) - ord('A')
         start_row = 8 - int(start[1])
         end_col = ord(end[0].upper()) - ord('A')
@@ -115,7 +136,7 @@ class Board:
         return False
 
 
-    def is_clear_path(self, start_row, start_col, end_row, end_col):
+    def is_clear_path(self, start_row: int, start_col: int, end_row: int, end_col: int) -> bool:
         step_row = (end_row - start_row) // max(1, abs(end_row - start_row))
         step_col = (end_col - start_col) // max(1, abs(end_col - start_col))
 
@@ -129,7 +150,7 @@ class Board:
         return True
 
 
-    def move_piece(self, start, end):
+    def move_piece(self, start: str, end: str) -> None:
         if self.validate_move(start, end):
             start_col = ord(start[0].upper()) - ord('A')
             start_row = 8 - int(start[1])
@@ -143,21 +164,6 @@ class Board:
             print(f"Invalid move from {start} to {end}")
         
     
-    # def move_piece(self, start, end):
-    #     start_col = ord(start[0].upper()) - ord('A')
-    #     start_row = 8 - int(start[1])
-    #     end_col = ord(end[0].upper()) - ord('A')
-    #     end_row = 8 - int(end[1])
-    
-    #     piece = self.board[start_row][start_col]
-    #     if piece == ' ':
-    #         print(f"No piece at {start}")
-    #         return
-    
-    #     self.board[end_row][end_col] = piece
-    #     self.board[start_row][start_col] = ' '
-
-
 if __name__ == "__main__":
     board = Board()
     board.display()
@@ -170,3 +176,7 @@ if __name__ == "__main__":
     print("\nInvalid move A3 to A5\n")
     board.move_piece('A3', 'A5')
     board.display()
+
+    print("\nGet piece at A3\n")
+    piece = board.get_piece('A3')
+    print(f"Piece at A3: {piece}")

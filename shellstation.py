@@ -3,11 +3,12 @@ import inquirer
 import argparse
 from hangman.hangman import Hangman
 from tic_tac_toe.tictactoe import TicTacToe
+from chess.chess import Chess
 
 
 @dataclass
 class ShellStation:
-  games = {'Hangman': Hangman, 'TicTacToe': TicTacToe}
+  games = {'Hangman': Hangman, 'TicTacToe': TicTacToe, 'Chess': Chess}
 
 
   def display_logo(self):
@@ -30,7 +31,7 @@ class ShellStation:
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="Run a specific game directly from the ShellStation game suite.")
-  valid_games = ['Hangman', 'TicTacToe']
+  valid_games = ['Hangman', 'TicTacToe', 'Chess']
   parser.add_argument('-g', '--game', type=str, choices=valid_games,
                       help="Specify the game to play.")
   return parser.parse_args()

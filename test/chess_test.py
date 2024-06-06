@@ -45,8 +45,7 @@ time.sleep(1)
 # Apply movements to each player (even lines = player1, odd lines = player2)
 with open(os.path.join(path, "test/chess_movements.txt"), 'r') as file:
     for index, line in enumerate(file):
-        if line != "knight\n":
-            pyautogui.hotkey('alt', 'tab')
-            time.sleep(1)
+        pyautogui.hotkey('alt', 'tab')
+        time.sleep(1)
         pyautogui.typewrite(line)
         time.sleep(2)

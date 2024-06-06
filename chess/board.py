@@ -6,6 +6,14 @@ class Board:
     def __init__(self):
         self.board = [[' ' for _ in range(8)] for _ in range(8)]
         self.setup_board()
+        self.__pieces = {
+            "pawn": Pawn,
+            "king": King,
+            "queen": Queen,
+            "rook": Rook,
+            "bishop": Bishop,
+            "knight": Knight,
+        }
     
 
     def setup_board(self) -> None:
@@ -71,16 +79,13 @@ class Board:
 
 
     def get_piece(self, position: str) -> Union['ChessPiece', str]:
-        col = ord(position[0].upper()) - ord('A')
-        row = 8 - int(position[1])
+        row, col = self.transform_coordinate(position)
         return self.board[row][col]
 
 
-    def validate_move(self, start: str, end: str) -> bool:
-        start_col = ord(start[0].upper()) - ord('A')
-        start_row = 8 - int(start[1])
-        end_col = ord(end[0].upper()) - ord('A')
-        end_row = 8 - int(end[1])
+    def is_valid_move(self, start: str, end: str) -> bool:
+        start_row, start_col = self.transform_coordinate(start)
+        end_row, end_col = self.transform_coordinate(end)
 
         piece = self.board[start_row][start_col]
         target = self.board[end_row][end_col]
@@ -151,17 +156,36 @@ class Board:
 
 
     def move_piece(self, start: str, end: str) -> None:
-        if self.validate_move(start, end):
-            start_col = ord(start[0].upper()) - ord('A')
-            start_row = 8 - int(start[1])
-            end_col = ord(end[0].upper()) - ord('A')
-            end_row = 8 - int(end[1])
+        if self.is_valid_move(start, end):
+            start_row, start_col = self.transform_coordinate(start)
+            end_row, end_col = self.transform_coordinate(end)
 
             self.board[end_row][end_col] = self.board[start_row][start_col]
             self.board[start_row][start_col] = ' '
             print(f"Moved from {start} to {end}")
         else:
             print(f"Invalid move from {start} to {end}")
+
+
+    def transform_coordinate(self, position: str) -> tuple[int, int]:
+        row = 8 - int(position[1])
+        col = ord(position[0].upper()) - ord('A')
+        return row, col
+
+
+    def is_promotion(self, position: str) -> bool:
+        piece = self.get_piece(position)
+
+        if isinstance(piece, Pawn) and piece.color == "blue":
+            return int(position[1]) == 1
+        elif isinstance(piece, Pawn) and piece.color == "red":
+            return int(position[1]) == 8
+        return False
+
+    
+    def replace_piece(self, position: str, piece: str, color: str) -> None:
+        row, col = self.transform_coordinate(position)
+        self.board[row][col] = self.__pieces.get(piece)(color)
         
     
 if __name__ == "__main__":

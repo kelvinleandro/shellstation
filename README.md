@@ -36,6 +36,12 @@ To directly start a specific game:
   python shellstation.py -g chess
 ```
 
+The game will ask you to specify a host and port. For example, you can enter:
+
+```bash
+  localhost 9999
+```
+
 ### Available commands
 
 - `-g`, `--game`: Start with the specified game. Options: chess, tictactoe, hangman.

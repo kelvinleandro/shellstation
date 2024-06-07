@@ -14,32 +14,32 @@ path = os.path.dirname(os.path.dirname(__file__))
 open_powershell()
 time.sleep(2)  # Wait for the powershell to open
 pyautogui.hotkey('win', 'left')
-time.sleep(1)
+# time.sleep(1)
 
 # Open the second powershell and move it to the right
 open_powershell()
 time.sleep(2)  # Wait for the powershell to open
 pyautogui.hotkey('win', 'right')
-time.sleep(1)
+# time.sleep(1)
 
 # Switch to the left powershell and execute the commands
 pyautogui.hotkey('alt', 'tab')
 time.sleep(1)
 pyautogui.typewrite(f'cd {path}\n')
 time.sleep(1)
-pyautogui.typewrite('python shellstation.py -g Hangman\n')
+pyautogui.typewrite('python shellstation.py -g hangman\n')
 time.sleep(1)
-pyautogui.typewrite('player1 localhost 9999\n')
-time.sleep(1)
+pyautogui.typewrite('localhost 9999\n')
+# time.sleep(1)
 
 # Switch to the right powershell and execute the commands
 pyautogui.hotkey('alt', 'tab')
 time.sleep(1)
 pyautogui.typewrite(f'cd {path}\n')
 time.sleep(1)
-pyautogui.typewrite('python shellstation.py -g Hangman\n')
+pyautogui.typewrite('python shellstation.py -g hangman\n')
 time.sleep(1)
-pyautogui.typewrite('player2 localhost 9999\n')
+pyautogui.typewrite('localhost 9999\n')
 time.sleep(1)
 
 # Apply movements to each player (even lines = player1, odd lines = player2)

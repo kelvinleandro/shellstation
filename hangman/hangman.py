@@ -28,34 +28,33 @@ class Hangman:
 
   def start(self) -> None:
     self.display_logo()
-    player, host, port = input('Select the player (player1/player2), host, and port:\n').split()
-
-    if player == 'player1':
-      self.host_game(host, int(port))
-      print(f"Hosting the game on {host}:{port}")
-    elif player == 'player2':
-      self.connect_to_game(host, int(port))
-      print(f"Connecting to the game at {host}:{port}")
-    else:
-      raise ValueError("Invalid user. Use 'player1' or 'player2'.")
-
-
-  def host_game(self, host: str, port: int) -> None:
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((host, port))
-    server.listen(1)
-    print("Waiting for a connection...")
-    client, addr = server.accept()
-    self.you = "chooser"
-    threading.Thread(target=self.handle_connection, args=(client,)).start()
-    server.close()
+    host, port = input('Specify the host and port:\n').split()
+    self.connect_to_game(host, int(port))
 
 
   def connect_to_game(self, host: str, port: int) -> None:
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((host, port))
-    self.you = "guesser"
-    threading.Thread(target=self.handle_connection, args=(client,)).start()
+    is_host = False
+    try:
+      server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      server.bind((host, port))
+      server.listen(1)
+
+      client, addr = server.accept()
+      is_host = True
+    except OSError as e:
+      if e.errno == 10048:  # Address already in use, attempt to connect as client
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect((host, port))
+      else:
+        raise e
+
+    if is_host:
+      self.you = "chooser"
+      threading.Thread(target=self.handle_connection, args=(client,)).start()
+      server.close()
+    else:
+      self.you = "guesser"
+      threading.Thread(target=self.handle_connection, args=(client,)).start()
 
 
   def handle_connection(self, client: socket.socket) -> None:

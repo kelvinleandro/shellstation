@@ -5,32 +5,38 @@ class Board:
   def __init__(self) -> None:
     self.board = [[" ", " ", " "],[" ", " ", " "],[" ", " ", " "]]
     self.turn = "X"
-    self.you = "X"
-    self.opponent = "O"
+    self.you = None
+    self.opponent = None
     self.winner = None
     self.game_over = False
     self.counter = 0
 
 
-  def host_game(self, host, port):
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((host, port))
-    server.listen(1)
+  def connect_to_game(self, host: str, port: int) -> None:
+    is_host = False
+    try:
+      server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      server.bind((host, port))
+      server.listen(1)
 
-    client, addr = server.accept()
-    self.you = "X"
-    self.opponent = "O"
-    threading.Thread(target=self.handle_connection, args=(client,)).start()
-    server.close()
+      client, addr = server.accept()
+      is_host = True
+    except OSError as e:
+      if e.errno == 10048:  # Address already in use, attempt to connect as client
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect((host, port))
+      else:
+        raise e
 
-
-  def connect_to_game(self, host, port):
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((host, port))
-
-    self.you = "O"
-    self.opponent = "X"
-    threading.Thread(target=self.handle_connection, args=(client,)).start()
+    if is_host:
+      self.you = "X"
+      self.opponent = "O"
+      threading.Thread(target=self.handle_connection, args=(client,)).start()
+      server.close()
+    else:
+      self.you = "O"
+      self.opponent = "X"
+      threading.Thread(target=self.handle_connection, args=(client,)).start()
 
 
   def handle_connection(self, client):

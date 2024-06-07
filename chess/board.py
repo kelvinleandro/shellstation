@@ -1,5 +1,5 @@
 from typing import Union
-from .pieces import *
+from pieces import *
 
 
 class Board:
@@ -44,23 +44,27 @@ class Board:
     
     def display(self) -> None:
         print('  A B C D E F G H')
-        for i in range(8):
-            row = str(8 - i) + ' '
-            for j in range(8):
-                piece = self.board[i][j]
-                row += str(piece) + ' ' if piece != ' ' else '. '
-            print(row + str(8 - i))
-        print('  A B C D E F G H')
+        for i, row in enumerate(self.board):
+            print(8 - i, end=" ")
+            for j, cell in enumerate(row):
+                if cell == " ":
+                    print('■' if (i + j) % 2 == 1 else ' ', end=" ")
+                else:
+                    print(cell, end=" ")
+            print(8 - i)
+        print("  A B C D E F G H")
     
 
     def display_inverted(self) -> None:
         print('  H G F E D C B A')
-        for i in range(8):
-            row = str(i + 1) + ' '
-            for j in range(7, -1, -1):
-                piece = self.board[7 - i][j]
-                row += str(piece) + ' ' if piece != ' ' else '. '
-            print(row + str(i + 1))
+        for i, row in enumerate(reversed(self.board)):
+            print(i + 1, end=" ")
+            for j, cell in enumerate(reversed(row)):
+                if cell == " ":
+                    print('■' if (i + j) % 2 == 1 else ' ', end=" ")
+                else:
+                    print(cell, end=" ")
+            print(i + 1)
         print('  H G F E D C B A')
 
 
@@ -191,14 +195,14 @@ class Board:
 if __name__ == "__main__":
     board = Board()
     board.display()
-    # board.display_inverted() # other player POV
+    board.display_inverted() # other player POV
     
     print("\nMove to A2 to A3\n")
     board.move_piece("A2","A3")
     board.display()
 
-    print("\nInvalid move A3 to A5\n")
-    board.move_piece('A3', 'A5')
+    print("\nMove to A7 to A6\n")
+    board.move_piece('A7', 'A6')
     board.display()
 
     print("\nGet piece at A3\n")

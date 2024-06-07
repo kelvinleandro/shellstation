@@ -8,7 +8,7 @@ from chess.chess import Chess
 
 @dataclass
 class ShellStation:
-  games = {'Hangman': Hangman, 'TicTacToe': TicTacToe, 'Chess': Chess}
+  games = {'hangman': Hangman, 'tictactoe': TicTacToe, 'chess': Chess}
 
 
   def display_logo(self):
@@ -31,7 +31,7 @@ class ShellStation:
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="Run a specific game directly from the ShellStation game suite.")
-  valid_games = ['Hangman', 'TicTacToe', 'Chess']
+  valid_games = ['hangman', 'tictactoe', 'chess']
   parser.add_argument('-g', '--game', type=str, choices=valid_games,
                       help="Specify the game to play.")
   return parser.parse_args()

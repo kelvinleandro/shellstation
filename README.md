@@ -33,12 +33,30 @@ To start ShellStation in interactive mode:
 To directly start a specific game:
 
 ```bash
-  python shellstation.py -g TicTacToe
+  python shellstation.py -g chess
 ```
 
 ### Available commands
 
-- `-g`, `--game`: Start with the specified game. Options: Hangman, TicTacToe.
+- `-g`, `--game`: Start with the specified game. Options: chess, tictactoe, hangman.
+
+## Tests
+
+Automated tests are provided to simulate matches for each game using `pyautogui`. These tests can be found in the `test` folder.
+
+To run the automated/simulated tests:
+
+1. Ensure you have `pyautogui` installed:
+
+```bash
+  pip install pyautogui
+```
+
+2. Run the test, e.g.:
+
+```bash
+  python test/chess_test.py
+```
 
 ## License
 

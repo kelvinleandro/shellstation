@@ -48,9 +48,9 @@ The game will ask you to specify a host and port. For example, you can enter:
 
 ## Tests
 
-Automated tests are provided to simulate matches for each game using `pyautogui`. These tests can be found in the `test` folder.
+`test` folder contains simulated matches for each game using `pyautogui`.
 
-To run the automated/simulated tests:
+To run the automated matches:
 
 1. Ensure you have `pyautogui` installed:
 
@@ -58,7 +58,7 @@ To run the automated/simulated tests:
   pip install pyautogui
 ```
 
-2. Run the test, e.g.:
+2. Run the file, e.g.:
 
 ```bash
   python test/chess_test.py

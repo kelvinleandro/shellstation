@@ -4,7 +4,7 @@ import threading
 import os
 from board import Board
 
-class Checkers:
+class Draughts:
     def __init__(self):
         self.board = Board()
         self.turn = "red"
@@ -89,4 +89,4 @@ class Checkers:
 
 
 if __name__ == "__main__":
-    Checkers().start()
+    Draughts().start()

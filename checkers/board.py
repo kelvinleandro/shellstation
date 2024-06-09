@@ -43,7 +43,20 @@ class Board:
             print(i + 1)
         print("  H G F E D C B A")
 
-    def get_piece(self, position: str) -> Union[Piece, None]:
+    def is_within_bounds(self, position: str) -> bool:
+        if len(position) != 2:
+            return False
+        col = position[0].upper()
+        row = position[1]
+        
+        if col < 'A' or col > 'H':
+            return False
+        if not row.isdigit() or int(row) < 1 or int(row) > 8:
+            return False
+        
+        return True
+
+    def get_piece(self, position: str) -> Union['Piece', None]:
         row, col = self.transform_coordinate(position)
         return self.board[row][col]
 

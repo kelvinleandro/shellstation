@@ -64,9 +64,28 @@ class Checkers:
                 self.board.display_inverted()
             
             if self.turn == self.you:
-                pass
+                while True:
+                    move = input("Enter a move (e.g., D6 C5): ").strip().upper()
+                    moves = move.split()
+                    if not all(self.board.is_within_bounds(move) for move in moves):
+                        print('Invalid coordinates! Try again.')
+                    elif self.board.get_piece(moves[0]) == None or self.board.get_piece(moves[0]).color == self.opponent:
+                        print('Invalid piece! Try again.')
+                    elif self.board.is_valid_move(moves):
+                        self.board.move_piece(moves)
+                        client.send(move.encode('utf-8'))
+                        self.turn = self.opponent
+                        break
+                    else:
+                        print('Invalid move! Try again.')
             else:
-                pass
+                data = client.recv(1024)
+                if data:
+                    moves = data.decode('utf-8').split()
+                    self.board.move_piece(moves)
+                    self.turn = self.you
+                else:
+                    break
 
 
 if __name__ == "__main__":

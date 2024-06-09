@@ -28,7 +28,7 @@ class Board:
             print(8 - i, end=" ")
             for j, cell in enumerate(row):
                 if cell is None:
-                    print('■' if (i + j) % 2 == 1 else ' ', end=" ")
+                    print('■' if (i + j) % 2 == 0 else ' ', end=" ")
                 else:
                     print(cell, end=" ")
             print(8 - i)
@@ -41,7 +41,7 @@ class Board:
             print(i + 1, end=" ")
             for j, cell in enumerate(reversed(row)):
                 if cell is None:
-                    print('■' if (i + j) % 2 == 1 else ' ', end=" ")
+                    print('■' if (i + j) % 2 == 0 else ' ', end=" ")
                 else:
                     print(cell, end=" ")
             print(i + 1)

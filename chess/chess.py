@@ -57,6 +57,7 @@ class Chess:
 
     def handle_connection(self, client: socket.socket) -> None:
         while not self.game_over:
+            os.system('cls' if os.name == 'nt' else 'clear')
             if self.you == "red":
                 self.board.display()
             else:

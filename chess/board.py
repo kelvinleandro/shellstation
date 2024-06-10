@@ -17,7 +17,7 @@ class Board:
     
 
     def setup_board(self) -> None:
-        # Setup blue pieces (assuming blue is for one player and red is for the other)
+        # Setup blue pieces
         for i in range(8):
             self.board[1][i] = Pawn('blue')
         self.board[0][0] = Rook('blue')

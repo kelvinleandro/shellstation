@@ -2,7 +2,7 @@
 import socket
 import threading
 import os
-from board import Board
+from .board import Board
 
 class Draughts:
     def __init__(self):

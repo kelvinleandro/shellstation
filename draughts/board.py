@@ -1,5 +1,5 @@
 from typing import Union
-from piece import Piece
+from .piece import Piece
 
 
 class Board:

@@ -86,6 +86,12 @@ class Draughts:
                     self.turn = self.you
                 else:
                     break
+            self.update_game_over()
+
+    def update_game_over(self) -> None:
+        red_count = sum(piece.color == 'red' for row in self.board.board for piece in row if piece is not None)
+        blue_count = sum(piece.color == 'blue' for row in self.board.board for piece in row if piece is not None)
+        self.game_over = red_count == 0 or blue_count == 0
 
 
 if __name__ == "__main__":

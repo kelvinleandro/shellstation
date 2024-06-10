@@ -48,4 +48,4 @@ with open(os.path.join(path, "test/draughts_movements.txt"), 'r') as file:
         pyautogui.hotkey('alt', 'tab')
         time.sleep(1)
         pyautogui.typewrite(line)
-        time.sleep(1.5)
+        time.sleep(1)

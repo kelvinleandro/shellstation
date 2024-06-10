@@ -1,7 +1,0 @@
-linux
-l
-x
-i
-i
-limux
-linux

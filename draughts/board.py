@@ -107,7 +107,19 @@ class Board:
 
         if piece.king:
             if abs(row_diff) == abs(col_diff):
-                return True
+                step_row = 1 if end_row > start_row else -1
+                step_col = 1 if end_col > start_col else -1
+                row, col = start_row + step_row, start_col + step_col
+                opponent_pieces_encountered = 0
+                while row != end_row and col != end_col:
+                    current_piece = self.board[row][col]
+                    if current_piece is not None:
+                        if current_piece.color == piece.color:
+                            return False  # Cannot jump over own pieces
+                        opponent_pieces_encountered += 1
+                    row += step_row
+                    col += step_col
+                return opponent_pieces_encountered <= 1
             return False
 
         # Regular pieces can move only forward diagonally one square or capture
@@ -157,11 +169,16 @@ class Board:
         self.board[start_row][start_col] = None
         self.board[end_row][end_col] = piece
 
-        # Handle captures
-        if self.is_capture_move(start, end):
-            capture_row = (start_row + end_row) // 2
-            capture_col = (start_col + end_col) // 2
-            self.board[capture_row][capture_col] = None
+        step_row = 1 if end_row > start_row else -1
+        step_col = 1 if end_col > start_col else -1
+
+        row, col = start_row + step_row, start_col + step_col
+        while row != end_row and col != end_col:
+            if self.board[row][col] is not None and self.board[row][col].color != piece.color:
+                self.board[row][col] = None
+            row += step_row
+            col += step_col
+
 
 if __name__ == "__main__":
     board = Board()

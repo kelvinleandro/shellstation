@@ -74,6 +74,10 @@ class Board:
 
 
     def is_valid_move(self, moves: list[str]) -> bool:
+        n_movements = len(moves) - 1
+        if n_movements < 1:
+            return False
+        
         if not all(self.is_within_bounds(move) for move in moves):
             return False
 
@@ -81,16 +85,15 @@ class Board:
         if piece is None:
             return False
 
-        capturing = False
+        n_captures = 0
         for i in range(1, len(moves)):
             start, end = moves[i-1], moves[i]
             if not self.is_valid_single_move(piece, start, end):
                 return False
-            if self.is_capture_move(start, end):
-                capturing = True
+            n_captures += int(self.is_capture_move(piece, start, end))
 
         # If the sequence is longer than one move, ensure all are captures
-        if len(moves) > 2 and not capturing:
+        if n_movements > 1 and n_captures != n_movements:
             return False
 
         return True
@@ -136,9 +139,21 @@ class Board:
         return False
 
 
-    def is_capture_move(self, start: str, end: str) -> bool:
+    def is_capture_move(self, piece: Piece, start: str, end: str) -> bool:
         start_row, start_col = self.transform_coordinate(start)
         end_row, end_col = self.transform_coordinate(end)
+        if piece.king:
+            step_row = 1 if end_row > start_row else -1
+            step_col = 1 if end_col > start_col else -1
+            row, col = start_row + step_row, start_col + step_col
+            opponent_pieces_encountered = 0
+            while row != end_row and col != end_col:
+                current_piece = self.board[row][col]
+                if current_piece is not None and piece.color != current_piece.color:
+                    opponent_pieces_encountered += 1
+                row += step_row
+                col += step_col
+            return opponent_pieces_encountered == 1
         return abs(start_row - end_row) == 2 and abs(start_col - end_col) == 2
 
 

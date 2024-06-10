@@ -10,14 +10,14 @@ ShellStation is a command-line game suite. It allows users to select and play ga
 
 ## Prerequisites
 
-Before running ShellStation, ensure you have Python installed on your system. The games are built with Python 3.8 or later.
+Before running ShellStation, ensure you have Python installed on your system. The games are built with Python 3.11.
 
 ## Installation
 
 1. Clone the repository:
     ```bash
       git clone https://github.com/kelvinleandro/shellstation
-      cd ShellStation
+      cd shellstation
     ```
 
 2. No additional libraries are required to run the basic version of the games as they use standard Python libraries.

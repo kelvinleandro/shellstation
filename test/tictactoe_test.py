@@ -27,26 +27,25 @@ pyautogui.hotkey('alt', 'tab')
 time.sleep(1)
 pyautogui.typewrite(f'cd {path}\n')
 time.sleep(1)
-pyautogui.typewrite('python draughts/draughts.py\n')
+pyautogui.typewrite('python shellstation.py -g tictactoe\n')
 time.sleep(1)
 pyautogui.typewrite('localhost 9999\n')
-time.sleep(1)
+# time.sleep(1)
 
 # Switch to the right powershell and execute the commands
 pyautogui.hotkey('alt', 'tab')
 time.sleep(1)
 pyautogui.typewrite(f'cd {path}\n')
 time.sleep(1)
-pyautogui.typewrite('python draughts/draughts.py\n')
+pyautogui.typewrite('python shellstation.py -g tictactoe\n')
 time.sleep(1)
-pyautogui.typewrite('localhost 9999\n')
 pyautogui.typewrite('localhost 9999\n')
 time.sleep(1)
 
 # Apply movements to each player (even lines = player1, odd lines = player2)
-with open(os.path.join(path, "test/draughts_movements.txt"), 'r') as file:
+with open(os.path.join(path, "test/tictactoe_movements.txt"), 'r') as file:
     for index, line in enumerate(file):
         pyautogui.hotkey('alt', 'tab')
         time.sleep(1)
         pyautogui.typewrite(line)
-        time.sleep(1)
+        time.sleep(2)

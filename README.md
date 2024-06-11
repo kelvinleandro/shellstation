@@ -2,6 +2,13 @@
 
 ShellStation is a command-line game suite. It allows users to select and play games through an interactive menu or directly via command-line arguments.
 
+## Preview
+![shellstation menu](img/menu.png)
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+  <img src="img/chess.png" />
+  <img src="img/draughts.png" />
+</div>
+
 ## Features
 
 - **Interactive Game Selection**: Users can choose which game to play through a simple command-line menu.

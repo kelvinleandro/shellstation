@@ -5,8 +5,14 @@ ShellStation is a command-line game suite. It allows users to select and play ga
 ## Preview
 ![shellstation menu](img/menu.png)
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <img src="img/chess.png" />
-  <img src="img/draughts.png" />
+  <div style="display:flex; flex-direction:column;">
+    <p style="text-align:center;"><b>CHESS<b></p>
+    <img src="img/chess.png" />
+  </div>
+  <div style="display:flex; flex-direction:column;">
+    <p style="text-align:center;"><b>DRAUGHTS<b></p>
+    <img src="img/draughts.png" />
+  </div>
 </div>
 
 ## Features

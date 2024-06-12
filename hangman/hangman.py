@@ -41,11 +41,11 @@ class Hangman:
 
       client, addr = server.accept()
       is_host = True
-    except OSError as e:
-      if e.errno == 10048:  # Address already in use, attempt to connect as client
+    except OSError:
+      try:  # Address already in use, attempt to connect as client
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((host, port))
-      else:
+      except Exception as e:
         raise e
 
     if is_host:

@@ -4,6 +4,7 @@ ShellStation is a command-line game suite. It allows users to select and play ga
 
 ## Previews
 ![shellstation menu](img/menu.png)
+
 ![chess](img/chess.png) ![draughts](img/draughts.png) ![tictactoe](img/tictactoe.png) ![connect four](img/connect4.png) ![hangman](img/hangman.png)
 
 ## Features

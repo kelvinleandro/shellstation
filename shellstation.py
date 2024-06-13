@@ -1,14 +1,16 @@
 from dataclasses import dataclass
 import inquirer
 import argparse
+
 from hangman.hangman import Hangman
 from tic_tac_toe.tictactoe import TicTacToe
 from chess.chess import Chess
 from draughts.draughts import Draughts
+from connect_four.connect_four import ConnectFour
 
 @dataclass
 class ShellStation:
-  games = {'hangman': Hangman, 'tictactoe': TicTacToe, 'chess': Chess, 'draughts': Draughts}
+  games = {'hangman': Hangman, 'tictactoe': TicTacToe, 'chess': Chess, 'draughts': Draughts, 'connect4': ConnectFour}
 
 
   def display_logo(self):
@@ -31,7 +33,7 @@ class ShellStation:
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="Run a specific game directly from the ShellStation game suite.")
-  valid_games = ['hangman', 'tictactoe', 'chess', 'draughts']
+  valid_games = ['hangman', 'tictactoe', 'chess', 'draughts', 'connect4']
   parser.add_argument('-g', '--game', type=str, choices=valid_games,
                       help="Specify the game to play.")
   return parser.parse_args()
@@ -39,8 +41,8 @@ def parse_arguments():
 
 if __name__ == "__main__":
   args = parse_arguments()
-  shell_station = ShellStation()
+  shellstation = ShellStation()
   if args.game:
-    shell_station.start(game_name=args.game)
+    shellstation.start(game_name=args.game)
   else:
-    shell_station.start()
+    shellstation.start()

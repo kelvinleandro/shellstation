@@ -104,7 +104,7 @@ class Hangman:
           word_completion = "".join(word_as_list)
           if "_" not in word_completion:
             self.guessed = True
-      elif len(guess) == len(self.word) and guess.isalpha():
+      elif len(guess) > 1 and guess.isalpha():
         if guess in self.guessed_words:
           print(f"You already guessed the word {guess}")
         elif guess != self.word:

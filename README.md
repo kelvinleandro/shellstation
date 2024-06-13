@@ -2,18 +2,9 @@
 
 ShellStation is a command-line game suite. It allows users to select and play games through an interactive menu or directly via command-line arguments.
 
-## Preview
+## Previews
 ![shellstation menu](img/menu.png)
-<div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <div style="display:flex; flex-direction:column;">
-    <p style="text-align:center;"><b>CHESS</b></p>
-    <img src="img/chess.png" />
-  </div>
-  <div style="display:flex; flex-direction:column;">
-    <p style="text-align:center;"><b>DRAUGHTS</b></p>
-    <img src="img/draughts.png" />
-  </div>
-</div>
+![chess](img/chess.png) ![draughts](img/draughts.png) ![tictactoe](img/tictactoe.png) ![connect four](img/connect4.png) ![hangman](img/hangman.png)
 
 ## Features
 
@@ -29,30 +20,37 @@ Before running ShellStation, ensure you have Python installed on your system. Th
 
 1. Clone the repository:
     ```bash
-      git clone https://github.com/kelvinleandro/shellstation
-      cd shellstation
+    git clone https://github.com/kelvinleandro/shellstation
     ```
 
-2. No additional libraries are required to run the basic version of the games as they use standard Python libraries.
+2. Change to the project directory:
+    ```bash
+    cd shellstation
+    ```
+
+3. Install the required libraries:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 
 To start ShellStation in interactive mode:
 
 ```bash
-  python shellstation.py
+python shellstation.py
 ```
 
 To directly start a specific game:
 
 ```bash
-  python shellstation.py -g chess
+python shellstation.py -g chess
 ```
 
 The game will ask you to specify a host and port. For example, you can enter:
 
 ```bash
-  localhost 9999
+localhost 9999
 ```
 
 ### Available commands
@@ -68,13 +66,13 @@ To run the automated matches:
 1. Ensure you have `pyautogui` installed:
 
 ```bash
-  pip install pyautogui
+pip install pyautogui
 ```
 
 2. Run the file, e.g.:
 
 ```bash
-  python test/chess_test.py
+python test/chess_test.py
 ```
 
 ## License

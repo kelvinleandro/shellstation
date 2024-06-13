@@ -57,7 +57,7 @@ The game will ask you to specify a host and port. For example, you can enter:
 
 ### Available commands
 
-- `-g`, `--game`: Start with the specified game. Options: chess, draughts, tictactoe, hangman.
+- `-g`, `--game`: Start with the specified game. Options: chess, draughts, tictactoe, hangman, connect4.
 
 ## Tests
 

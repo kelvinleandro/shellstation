@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 import inquirer
 import argparse
+import os
+import sys
 
 from hangman.hangman import Hangman
 from tic_tac_toe.tictactoe import TicTacToe
@@ -31,11 +33,21 @@ class ShellStation:
       self.games[choice]().start()
 
 
+def run_test(test):
+  test_file = os.path.join('test', f'{test}_test.py')
+  if not os.path.exists(test_file):
+    print(f"Test file {test_file} does not exist.")
+    sys.exit(1)
+  # Run the test file
+  os.system(f'python {test_file}')
+
+
 def parse_arguments():
-  parser = argparse.ArgumentParser(description="Run a specific game directly from the ShellStation game suite.")
+  parser = argparse.ArgumentParser(description="Run a specific game or test directly from the ShellStation game suite.")
   valid_games = ['hangman', 'tictactoe', 'chess', 'draughts', 'connect4']
-  parser.add_argument('-g', '--game', type=str, choices=valid_games,
-                      help="Specify the game to play.")
+  group = parser.add_mutually_exclusive_group()
+  group.add_argument('-g', '--game', type=str, choices=valid_games, help="Specify the game to play.")
+  group.add_argument('-t', '--test', type=str, choices=valid_games, help="Specify the test to run.")
   return parser.parse_args()
 
 
@@ -44,5 +56,7 @@ if __name__ == "__main__":
   shellstation = ShellStation()
   if args.game:
     shellstation.start(game_name=args.game)
+  elif args.test:
+    run_test(args.test)
   else:
     shellstation.start()

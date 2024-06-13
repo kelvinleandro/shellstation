@@ -1,6 +1,6 @@
 # ShellStation
 
-ShellStation is a command-line game suite. It allows users to select and play games through an interactive menu or directly via command-line arguments.
+ShellStation is a command-line game suite. It allows users to select and play games through an interactive menu, directly via command-line arguments, or run automated tests/matches for each game.
 
 ## Previews
 ![shellstation menu](img/menu.png)
@@ -10,6 +10,7 @@ ShellStation is a command-line game suite. It allows users to select and play ga
 
 - **Interactive Game Selection**: Users can choose which game to play through a simple command-line menu.
 - **Direct Game Launch**: Users have the option to directly start a game using command-line arguments.
+- **Automated Tests**: Users can run automated matches for each game using command-line arguments.
 - **Extensible**: Adding new games is as straightforward as updating the `ShellStation` class and adding the game files.
 
 ## Prerequisites
@@ -53,9 +54,16 @@ The game will ask you to specify a host and port. For example, you can enter:
 localhost 9999
 ```
 
+To run automated tests for a specific game:
+
+```bash
+python shellstation.py -t chess
+```
+
 ### Available commands
 
 - `-g`, `--game`: Start with the specified game. Options: chess, draughts, tictactoe, hangman, connect4.
+- `-t`, `--test`: Run the specified test. Options: chess, draughts, tictactoe, hangman, connect4.
 
 ## Tests
 
@@ -63,16 +71,8 @@ localhost 9999
 
 To run the automated matches:
 
-1. Ensure you have `pyautogui` installed:
-
 ```bash
-pip install pyautogui
-```
-
-2. Run the file, e.g.:
-
-```bash
-python test/chess_test.py
+python shellstation.py -t GAME_OPTION
 ```
 
 ## License

@@ -33,15 +33,17 @@ class ConnectFour:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.bind((host, port))
             server.listen(1)
-
+            print(f"Waiting for a connection on {host}:{port}...")
             client, addr = server.accept()
             is_host = True
+            print(f"Connected by {addr}")
         except OSError:
             try:  # Address already in use, attempt to connect as client
                 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 client.connect((host, port))
+                print(f"Connected to {host}:{port}")
             except Exception as e:
-                raise e
+                print(f"Failed to connect to {host}:{port}. Exception: {e}")
 
         if is_host:
             self.you = "\033[31m\u25CF\033[0m" # red circle

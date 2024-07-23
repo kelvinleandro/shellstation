@@ -2,42 +2,45 @@ import pyautogui
 import time
 import os
 
-def open_powershell():
-    pyautogui.hotkey('win', 'r')
-    time.sleep(1)
-    pyautogui.typewrite('powershell')
-    pyautogui.press('enter')
+def open_terminal():
+    if os.name == 'nt':
+        pyautogui.hotkey('win', 'r')
+        time.sleep(1)
+        pyautogui.typewrite('powershell')
+        pyautogui.press('enter')
+    elif os.name == 'posix':
+        pyautogui.hotkey('ctrl', 'alt', 't')
 
 path = os.path.dirname(os.path.dirname(__file__))
 
-# Open the first powershell and move it to the left
-open_powershell()
-time.sleep(2)  # Wait for the powershell to open
+# Open the first terminal and move it to the left
+open_terminal()
+time.sleep(2)  # Wait for the terminal to open
 pyautogui.hotkey('win', 'left')
-# time.sleep(1)
+time.sleep(1)
 
-# Open the second powershell and move it to the right
-open_powershell()
-time.sleep(2)  # Wait for the powershell to open
+# Open the second terminal and move it to the right
+open_terminal()
+time.sleep(2)  # Wait for the terminal to open
 pyautogui.hotkey('win', 'right')
-# time.sleep(1)
+time.sleep(1)
 
-# Switch to the left powershell and execute the commands
+# Switch to the left terminal and execute the commands
 pyautogui.hotkey('alt', 'tab')
 time.sleep(1)
 pyautogui.typewrite(f'cd {path}\n')
 time.sleep(1)
-pyautogui.typewrite('python shellstation.py -g hangman\n')
+pyautogui.typewrite(f'python{"3" if os.name == "posix" else ""} shellstation.py -g hangman\n')
 time.sleep(1)
 pyautogui.typewrite('localhost 9999\n')
-# time.sleep(1)
+time.sleep(1)
 
-# Switch to the right powershell and execute the commands
+# Switch to the right terminal and execute the commands
 pyautogui.hotkey('alt', 'tab')
 time.sleep(1)
 pyautogui.typewrite(f'cd {path}\n')
 time.sleep(1)
-pyautogui.typewrite('python shellstation.py -g hangman\n')
+pyautogui.typewrite(f'python{"3" if os.name == "posix" else ""} shellstation.py -g hangman\n')
 time.sleep(1)
 pyautogui.typewrite('localhost 9999\n')
 time.sleep(1)

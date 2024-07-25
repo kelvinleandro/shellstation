@@ -93,35 +93,37 @@ class Battleship:
                     if len(coordinate.split()) > 1 or not self.bombed_board.is_valid_coordinate_to_bomb(coordinate):
                         print('Invalid coordinate! Try again.')
                     else:
-                        client.send(f"VALIDATE {coordinate}".encode())
-                        self.turn = self.opponent
+                        client.send(f"VALIDATE_REQ {coordinate}".encode())
 
                         response = client.recv(1024).decode()
-                        self.bombed_board.bomb(coordinate, "\U0001F4A5" if response[-1] == "1" else "X")
-                        break
+                        if response.startswith("VALIDATE_RES"):
+                            self.bombed_board.bomb(coordinate, "\U0001F4A5" if response[-1] == "1" else "X")
+                            self.turn = self.opponent
+                            break
+                        
             else:
                 data = client.recv(1024)
                 if not data: break
                 
                 message = data.decode()
-                if message.startswith("VALIDATE"):
-                    response = "1" if self.board.is_valid_bombing(message[9:]) else "0"
-                    client.send(f"VAL_RESPONSE {response}".encode())
-                # elif message.startswith("GAME_OVER_REQ"):
-                #     other_board_str = message[14:]
-                #     game_over = self.board.is_all_bombed(other_board_str)
-                #     client.send(f"GAME_OVER_RES {'1' if game_over else '0'}".encode())
+                if message.startswith("VALIDATE_REQ"):
+                    response = "1" if self.board.is_valid_bombing(message[13:]) else "0"
+                    client.send(f"VALIDATE_RES {response}".encode())
                 
                 self.turn = self.you
+            # self.update_game_over(client)
         print('GAME OVER.')
 
 
     def update_game_over(self, client: socket.socket) -> None:
-        pass
-        # client.send(f"GAME_OVER_REQ {str(self.bombed_board)}".encode())
-        # message = client.recv(1024).decode()
-        # if message.startswith("GAME_OVER_RES"):
-        #     self.game_over = message[-1] == "1"
+        client.send(f"GAME_OVER_REQ {str(self.bombed_board)}".encode())
+        message = client.recv(1024).decode()
+        if message.startswith("GAME_OVER_RES"):
+            self.game_over = message[-1] == "1"
+        elif message.startswith("GAME_OVER_REQ"):
+            other_board_str = message[14:]
+            game_over = self.board.is_all_bombed(other_board_str)
+            client.send(f"GAME_OVER_RES {'1' if game_over else '0'}".encode())
 
 
 if __name__ == "__main__":

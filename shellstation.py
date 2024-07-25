@@ -43,7 +43,7 @@ def run_test(test):
     print(f"Test file {test_file} does not exist.")
     sys.exit(1)
   # Run the test file
-  os.system(f'python {test_file}')
+  os.system(f'python{"3" if os.name == "posix" else ""} {test_file}')
 
 
 def parse_arguments():

@@ -5,7 +5,7 @@ ShellStation is a command-line game suite. It allows users to select and play ga
 ## Previews
 ![shellstation menu](img/menu.png)
 
-![chess](img/chess.png) ![draughts](img/draughts.png) ![tictactoe](img/tictactoe.png) ![connect four](img/connect4.png) ![hangman](img/hangman.png)
+![chess](img/chess.png) ![draughts](img/draughts.png) ![tictactoe](img/tictactoe.png) ![connect four](img/connect4.png) ![hangman](img/hangman.png) ![battleship](img/battleship.png)
 
 ## Features
 
@@ -63,8 +63,8 @@ python shellstation.py -t chess
 
 ### Available commands
 
-- `-g`, `--game`: Start with the specified game. Options: chess, draughts, tictactoe, hangman, connect4.
-- `-t`, `--test`: Run the specified test. Options: chess, draughts, tictactoe, hangman, connect4.
+- `-g`, `--game`: Start with the specified game. Options: battleship, chess, connect4, draughts, hangman, tictactoe.
+- `-t`, `--test`: Run the specified test. Options: battleship, chess, connect4, draughts, hangman, tictactoe.
 
 ## Tests
 

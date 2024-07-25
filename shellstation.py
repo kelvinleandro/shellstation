@@ -6,9 +6,17 @@ import sys
 
 from games import *
 
+
 @dataclass
 class ShellStation:
-  games = {'hangman': Hangman, 'tictactoe': TicTacToe, 'chess': Chess, 'draughts': Draughts, 'connect4': ConnectFour}
+  games = {
+    'battleship': Battleship,
+    'chess': Chess, 
+    'connect4': ConnectFour, 
+    'draughts': Draughts, 
+    'hangman': Hangman, 
+    'tictactoe': TicTacToe, 
+  }
 
 
   def display_logo(self):
@@ -40,7 +48,7 @@ def run_test(test):
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="Run a specific game or test directly from the ShellStation game suite.")
-  valid_games = ['hangman', 'tictactoe', 'chess', 'draughts', 'connect4']
+  valid_games = ['battleship', 'chess', 'connect4', 'draughts', 'hangman', 'tictactoe']
   group = parser.add_mutually_exclusive_group()
   group.add_argument('-g', '--game', type=str, choices=valid_games, help="Specify the game to play.")
   group.add_argument('-t', '--test', type=str, choices=valid_games, help="Specify the test to run.")

@@ -68,6 +68,7 @@ class Board:
 
 
     def transform_coordinate(self, position: str) -> tuple[int, int]:
+        # Transform a board position (e.g., 'A1') to matrix coordinates
         row = 8 - int(position[1])
         col = ord(position[0].upper()) - ord('A')
         return row, col
@@ -78,13 +79,16 @@ class Board:
         if n_movements < 1:
             return False
         
+        # Ensure all moves are within board bounds
         if not all(self.is_within_bounds(move) for move in moves):
             return False
 
+        # Ensure the piece exists
         piece = self.get_piece(moves[0])
         if piece is None:
             return False
 
+        # Ensure the move sequence is valid
         n_captures = 0
         for i in range(1, len(moves)):
             start, end = moves[i-1], moves[i]
@@ -105,10 +109,12 @@ class Board:
         row_diff = end_row - start_row
         col_diff = end_col - start_col
 
+        # Check if the target cell is empty
         if self.get_piece(end) is not None:
             return False
 
         if piece.king:
+            # Kings can move any number of squares diagonally, so we need to check the entire path
             if abs(row_diff) == abs(col_diff):
                 step_row = 1 if end_row > start_row else -1
                 step_col = 1 if end_col > start_col else -1
@@ -122,8 +128,9 @@ class Board:
                         opponent_pieces_encountered += 1
                     row += step_row
                     col += step_col
+                # Valid if the path contains at most one opponent piece (capture move)
                 return opponent_pieces_encountered <= 1
-            return False
+            return False # not a diagonal move
 
         # Regular pieces can move only forward diagonally one square or capture
         if abs(row_diff) == 1 and abs(col_diff) == 1:
@@ -143,21 +150,26 @@ class Board:
         start_row, start_col = self.transform_coordinate(start)
         end_row, end_col = self.transform_coordinate(end)
         if piece.king:
+            # For a king, check the entire diagonal path between start and end positions
             step_row = 1 if end_row > start_row else -1
             step_col = 1 if end_col > start_col else -1
             row, col = start_row + step_row, start_col + step_col
             opponent_pieces_encountered = 0
+            # Cross the path to check if exactly one opponent piece is encountered
             while row != end_row and col != end_col:
                 current_piece = self.board[row][col]
                 if current_piece is not None and piece.color != current_piece.color:
                     opponent_pieces_encountered += 1
                 row += step_row
                 col += step_col
+            # A valid capture move should encounter exactly one opponent piece
             return opponent_pieces_encountered == 1
+        # For regular pieces, check if the move is a jump of exactly two squares
         return abs(start_row - end_row) == 2 and abs(start_col - end_col) == 2
 
 
     def move_piece(self, moves: list[str]) -> None:
+        # Execute a sequence of moves if valid
         if not self.is_valid_move(moves):
             print("Invalid move")
             return
@@ -170,7 +182,7 @@ class Board:
         for i in range(1, len(moves)):
             self.execute_single_move(piece, moves[i-1], moves[i])
 
-        # Check for king promotion
+        # Check for king promotion after the final move
         end = moves[-1]
         end_row, _ = self.transform_coordinate(end)
         if (piece.color == 'blue' and end_row == 7) or (piece.color == 'red' and end_row == 0):
@@ -181,14 +193,18 @@ class Board:
         start_row, start_col = self.transform_coordinate(start)
         end_row, end_col = self.transform_coordinate(end)
 
+        # Put the piece in the new position
         self.board[start_row][start_col] = None
         self.board[end_row][end_col] = piece
 
+        # Determine the direction of movement
         step_row = 1 if end_row > start_row else -1
         step_col = 1 if end_col > start_col else -1
 
+        # Check for captures
         row, col = start_row + step_row, start_col + step_col
         while row != end_row and col != end_col:
+            # Capture the opponent's piece
             if self.board[row][col] is not None and self.board[row][col].color != piece.color:
                 self.board[row][col] = None
             row += step_row

@@ -103,8 +103,10 @@ class Board:
         col_diff = abs(start_col - end_col)
         row_diff = abs(start_row - end_row)
 
+        # Check move validity for each piece type
         if isinstance(piece, Pawn):
             if piece.color == 'blue':
+                # Blue pawns move down the board
                 if start_row == 1 and end_row == start_row + 2 and col_diff == 0 and target == ' ':
                     return True
                 if end_row == start_row + 1 and col_diff == 0 and target == ' ':
@@ -112,6 +114,7 @@ class Board:
                 if end_row == start_row + 1 and col_diff == 1 and target != ' ' and target.color != piece.color:
                     return True
             else:
+                # Red pawns move up the board
                 if start_row == 6 and end_row == start_row - 2 and col_diff == 0 and target == ' ':
                     return True
                 if end_row == start_row - 1 and col_diff == 0 and target == ' ':
@@ -120,25 +123,30 @@ class Board:
                     return True
 
         if isinstance(piece, Rook):
+            # Rooks move in straight lines
             if col_diff == 0 or row_diff == 0:
                 if self.is_clear_path(start_row, start_col, end_row, end_col):
                     return True
 
         if isinstance(piece, Knight):
+            # Knights move in an 'L' shape
             if (col_diff == 2 and row_diff == 1) or (col_diff == 1 and row_diff == 2):
                 return True
 
         if isinstance(piece, Bishop):
+            # Bishops move in diagonals
             if col_diff == row_diff:
                 if self.is_clear_path(start_row, start_col, end_row, end_col):
                     return True
 
         if isinstance(piece, Queen):
+            # Queens move in straight lines and diagonals
             if col_diff == row_diff or col_diff == 0 or row_diff == 0:
                 if self.is_clear_path(start_row, start_col, end_row, end_col):
                     return True
         
         if isinstance(piece, King):
+            # Kings move one square in any direction
             if col_diff <= 1 and row_diff <= 1:
                 return True
 
@@ -146,6 +154,7 @@ class Board:
 
 
     def is_clear_path(self, start_row: int, start_col: int, end_row: int, end_col: int) -> bool:
+        # Check if the path between two squares is clear (no pieces in between)
         step_row = (end_row - start_row) // max(1, abs(end_row - start_row))
         step_col = (end_col - start_col) // max(1, abs(end_col - start_col))
 
@@ -172,6 +181,7 @@ class Board:
 
 
     def transform_coordinate(self, position: str) -> tuple[int, int]:
+        # Transform a board position (e.g., 'A1') to matrix coordinates
         row = 8 - int(position[1])
         col = ord(position[0].upper()) - ord('A')
         return row, col
@@ -180,6 +190,7 @@ class Board:
     def is_promotion(self, position: str) -> bool:
         piece = self.get_piece(position)
 
+        # Check if a pawn at the given position is eligible for promotion
         if isinstance(piece, Pawn) and piece.color == "blue":
             return int(position[1]) == 1
         elif isinstance(piece, Pawn) and piece.color == "red":
@@ -188,6 +199,7 @@ class Board:
 
     
     def replace_piece(self, position: str, piece: str, color: str) -> None:
+        # Replace a pawn with a different piece upon promotion
         row, col = self.transform_coordinate(position)
         self.board[row][col] = self.__pieces.get(piece)(color)
         

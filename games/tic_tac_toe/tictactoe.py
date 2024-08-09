@@ -92,28 +92,33 @@ class TicTacToe:
 
   def update_game_over(self) -> None:
     board = self.board.board
+    # Check for horizontal win
     for row in range(3):
       if board[row][0] == board[row][1] == board[row][2] != " ":
         self.winner = board[row][0]
         self.game_over = True
         return
 
+    # Check for vertical win
     for column in range(3):
       if board[0][column] == board[1][column] == board[2][column] != " ":
         self.winner = board[0][column]
         self.game_over = True
         return
 
+    # Check for diagonal win
     if board[0][0] == board[1][1] == board[2][2] != " ":
       self.winner = board[0][0]
       self.game_over = True
       return
       
+    # Check for anti-diagonal win
     if board[0][2] == board[1][1] == board[2][0] != " ":
       self.winner = board[0][2]
       self.game_over = True
       return
 
+    # Check for tie
     if self.counter == 9:
       self.game_over = True
 

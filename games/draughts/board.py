@@ -134,7 +134,7 @@ class Board:
 
         # Regular pieces can move only forward diagonally one square or capture
         if abs(row_diff) == 1 and abs(col_diff) == 1:
-            return True
+            return piece.color == "blue" and row_diff == 1 or piece.color == "red" and row_diff == -1
 
         # Check for capturing move
         if abs(row_diff) == 2 and abs(col_diff) == 2:

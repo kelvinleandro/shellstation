@@ -67,9 +67,14 @@ class Chess:
             
             if self.turn == self.you:
                 while True:
-                    move = input("Enter a move (e.g., A2 A3): ").strip().upper()
+                    move = input("Enter a move (e.g., A2 A3) or exit: ").strip().upper()
                     coordinates = move.split()
-                    if not self.board.is_within_bounds(coordinates[0]) or not self.board.is_within_bounds(coordinates[1]):
+                    if move == "EXIT":
+                        client.send("EXIT".encode('utf-8'))
+                        client.close()
+                        self.game_over = True
+                        break
+                    elif not self.board.is_within_bounds(coordinates[0]) or not self.board.is_within_bounds(coordinates[1]):
                         print('Invalid coordinates! Try again.')
                     elif self.board.get_piece(coordinates[0]) != " " and self.board.get_piece(coordinates[0]).color == self.opponent:
                         print('Invalid piece! Try again.')
@@ -99,6 +104,9 @@ class Chess:
                 data = client.recv(1024)
                 if data:
                     content = data.decode('utf-8')
+                    if content == "EXIT":
+                        self.game_over = True
+                        break
                     if content.startswith('promotion'):
                         _, start, end, piece_option = content.split()
                         self.board.move_piece(start, end)

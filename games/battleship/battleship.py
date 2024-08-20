@@ -89,8 +89,13 @@ class Battleship:
 
             if self.turn == self.you:
                 while True:
-                    coordinate = input("Enter a coordinate to bomb: ").strip().upper()
-                    if len(coordinate.split()) > 1 or not self.bombed_board.is_valid_coordinate_to_bomb(coordinate):
+                    coordinate = input("Enter a coordinate to bomb or exit: ").strip().upper()
+                    if coordinate == "EXIT":
+                        client.send("EXIT".encode('utf-8'))
+                        client.close()
+                        self.game_over = True
+                        break
+                    elif len(coordinate.split()) > 1 or not self.bombed_board.is_valid_coordinate_to_bomb(coordinate):
                         print('Invalid coordinate! Try again.')
                     else:
                         client.send(f"VALIDATE_REQ {coordinate}".encode())
@@ -106,7 +111,10 @@ class Battleship:
                 if not data: break
                 
                 message = data.decode()
-                if message.startswith("VALIDATE_REQ"):
+                if message == "EXIT":
+                    self.game_over = True
+                    break
+                elif message.startswith("VALIDATE_REQ"):
                     response = "1" if self.board.is_valid_bombing(message[13:]) else "0"
                     client.send(f"VALIDATE_RES {response}".encode())
                 

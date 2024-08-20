@@ -61,7 +61,13 @@ class ConnectFour:
             self.board.display()
             if self.turn == self.you:
                 while True:
-                    move = input("Enter a column (1-7): ")
+                    move = input("Enter a column (1-7) or exit: ").strip().upper()
+
+                    if move == "EXIT":
+                        client.send("EXIT".encode('utf-8'))
+                        client.close()
+                        self.game_over = True
+                        break
 
                     try:
                         column = int(move)
@@ -77,11 +83,14 @@ class ConnectFour:
                     else:
                         print('Invalid column! Try again.')
             else:
-                data = client.recv(1024)
+                data = client.recv(1024).decode()
                 if not data:
                     break
                 else:
-                    column = int(data.decode('utf-8'))
+                    if data == "EXIT":
+                        self.game_over = True
+                        break
+                    column = int(data)
                     self.board.apply_move(column, self.opponent)
                     self.turn = self.you
             self.counter += 1
@@ -98,6 +107,8 @@ class ConnectFour:
             print("Game over.")
 
     def update_game_over(self) -> None:
+        if self.game_over:
+            return
         board = self.board.board
 
         # Check for horizontal win

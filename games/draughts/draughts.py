@@ -68,9 +68,14 @@ class Draughts:
             
             if self.turn == self.you:
                 while True:
-                    move = input("Enter a move (e.g., D6 C5): ").strip().upper()
+                    move = input("Enter a move (e.g., D6 C5) or exit: ").strip().upper()
                     moves = move.split()
-                    if not all(self.board.is_within_bounds(move) for move in moves):
+                    if move == "EXIT":
+                        client.send("EXIT".encode('utf-8'))
+                        client.close()
+                        self.game_over = True
+                        break
+                    elif not all(self.board.is_within_bounds(move) for move in moves):
                         print('Invalid coordinates! Try again.')
                     elif self.board.get_piece(moves[0]) == None or self.board.get_piece(moves[0]).color == self.opponent:
                         print('Invalid piece! Try again.')
@@ -82,9 +87,12 @@ class Draughts:
                     else:
                         print('Invalid move! Try again.')
             else:
-                data = client.recv(1024)
+                data = client.recv(1024).decode('utf-8')
                 if data:
-                    moves = data.decode('utf-8').split()
+                    if data == "EXIT":
+                        self.game_over = True
+                        break
+                    moves = data.split()
                     self.board.move_piece(moves)
                     self.turn = self.you
                 else:
@@ -94,6 +102,8 @@ class Draughts:
 
 
     def update_game_over(self) -> None:
+        if self.game_over:
+            return
         red_count = sum(piece.color == 'red' for row in self.board.board for piece in row if piece is not None)
         blue_count = sum(piece.color == 'blue' for row in self.board.board for piece in row if piece is not None)
         self.game_over = red_count == 0 or blue_count == 0

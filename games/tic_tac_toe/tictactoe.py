@@ -65,8 +65,13 @@ class TicTacToe:
       self.board.print_board()
       if self.turn == self.you:
         while True:
-          move = input("Enter a move (e.g., 0,0): ")
-          if self.board.check_valid_move(move.split(',')):
+          move = input("Enter a move (e.g., 0,0) or exit: ").strip().upper()
+          if move == "EXIT":
+            client.send("EXIT".encode('utf-8'))
+            client.close()
+            self.game_over = True
+            break
+          elif self.board.check_valid_move(move.split(',')):
             client.send(move.encode('utf-8'))
             self.board.apply_move(move.split(','), self.you)
             self.turn = self.opponent
@@ -74,11 +79,14 @@ class TicTacToe:
           else:
             print('Invalid move! Try again.')
       else:
-        data = client.recv(1024)
+        data = client.recv(1024).decode()
         if not data:
           break
         else:
-          self.board.apply_move(data.decode('utf-8').split(','), self.opponent)
+          if data == "EXIT":
+            self.game_over = True
+            break
+          self.board.apply_move(data.split(','), self.opponent)
           self.turn = self.you
       self.counter += 1
       self.update_game_over()
@@ -91,6 +99,8 @@ class TicTacToe:
 
 
   def update_game_over(self) -> None:
+    if self.game_over:
+      return
     board = self.board.board
     # Check for horizontal win
     for row in range(3):
